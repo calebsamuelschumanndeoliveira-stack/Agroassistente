@@ -1,261 +1,484 @@
-# AgroAssistente — Versão Funcional (Gemini API)
-
-Substitua TODO o conteúdo do seu arquivo HTML por este.
-
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AgroAssistente</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+:root{
+--green-dark:#16361d;
+--green:#2f6b3d;
+--green-light:#5aa469;
+--cream:#f4f0e8;
+--white:#ffffff;
+--border:#d7e2d3;
+--text:#1d1d1d;
+--muted:#6d6d6d;
 }
 
-#app {
-  width: 100%;
-  max-width: 500px;
-  height: 100vh;
-  background: white;
-  display: flex;
-  flex-direction: column;
+body{
+background:var(--green-dark);
+font-family:'Sora',sans-serif;
+height:100vh;
+overflow:hidden;
 }
 
-.header {
-  background: #1d4d2b;
-  color: white;
-  padding: 16px;
-  font-size: 20px;
-  font-weight: bold;
+#app{
+max-width:500px;
+height:100vh;
+margin:auto;
+background:var(--cream);
+display:flex;
+flex-direction:column;
 }
 
-#chat {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.header{
+background:var(--green-dark);
+padding:50px 20px 18px;
+display:flex;
+align-items:center;
+gap:14px;
 }
 
-.message {
-  padding: 12px;
-  border-radius: 12px;
-  line-height: 1.5;
-  max-width: 85%;
-  white-space: pre-wrap;
+.logo{
+width:48px;
+height:48px;
+border-radius:14px;
+background:var(--green-light);
+display:flex;
+align-items:center;
+justify-content:center;
+flex-shrink:0;
 }
 
-.user {
-  background: #1d4d2b;
-  color: white;
-  align-self: flex-end;
+.logo svg{
+width:24px;
+height:24px;
+fill:var(--green-dark);
 }
 
-.ai {
-  background: #ececec;
-  color: black;
-  align-self: flex-start;
+.header-text{
+flex:1;
 }
 
-.input-area {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
-  border-top: 1px solid #ddd;
+.title{
+font-family:'DM Serif Display',serif;
+font-size:24px;
+color:white;
 }
 
-textarea {
-  flex: 1;
-  resize: none;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  height: 50px;
+.subtitle{
+font-size:12px;
+color:#cde5c8;
+margin-top:3px;
 }
 
-button {
-  background: #1d4d2b;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 0 20px;
-  cursor: pointer;
+.chat{
+flex:1;
+overflow-y:auto;
+padding:16px;
+display:flex;
+flex-direction:column;
+gap:14px;
+scroll-behavior:smooth;
 }
 
-.setup {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-bottom: 1px solid #ddd;
+.chat::-webkit-scrollbar{
+display:none;
 }
 
-.setup input {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
+.message{
+display:flex;
+gap:8px;
+align-items:flex-end;
+animation:fade .2s ease;
+}
+
+.message.user{
+flex-direction:row-reverse;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(8px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.avatar{
+width:32px;
+height:32px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-shrink:0;
+font-size:12px;
+font-weight:600;
+}
+
+.ai-avatar{
+background:var(--green-dark);
+color:white;
+}
+
+.user-avatar{
+background:var(--green-light);
+color:white;
+}
+
+.bubble{
+padding:12px 14px;
+max-width:78%;
+border-radius:18px;
+line-height:1.6;
+font-size:14px;
+white-space:pre-wrap;
+word-break:break-word;
+}
+
+.ai-bubble{
+background:white;
+border:1px solid var(--border);
+color:var(--text);
+border-radius:6px 18px 18px 18px;
+}
+
+.user-bubble{
+background:var(--green);
+color:white;
+border-radius:18px 6px 18px 18px;
+}
+
+.setup{
+padding:12px;
+background:white;
+border-bottom:1px solid var(--border);
+display:flex;
+gap:8px;
+}
+
+.setup input{
+flex:1;
+padding:12px;
+border-radius:12px;
+border:1px solid var(--border);
+outline:none;
+font-size:14px;
+}
+
+.setup button{
+padding:0 16px;
+border:none;
+background:var(--green-dark);
+color:white;
+border-radius:12px;
+cursor:pointer;
+font-family:'Sora',sans-serif;
+}
+
+.suggestions{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding:10px 16px;
+background:var(--cream);
+}
+
+.suggestions::-webkit-scrollbar{
+display:none;
+}
+
+.chip{
+background:white;
+border:1px solid var(--border);
+padding:8px 14px;
+border-radius:20px;
+font-size:12px;
+white-space:nowrap;
+cursor:pointer;
+}
+
+.input-area{
+padding:12px;
+background:white;
+border-top:1px solid var(--border);
+display:flex;
+gap:10px;
+align-items:flex-end;
+}
+
+.input-wrap{
+flex:1;
+background:var(--cream);
+border:1px solid var(--border);
+border-radius:20px;
+padding:10px 14px;
+}
+
+textarea{
+width:100%;
+border:none;
+background:transparent;
+resize:none;
+outline:none;
+font-family:'Sora',sans-serif;
+font-size:14px;
+max-height:100px;
+}
+
+.send{
+width:48px;
+height:48px;
+border:none;
+border-radius:50%;
+background:var(--green-dark);
+color:white;
+cursor:pointer;
+font-size:18px;
+flex-shrink:0;
+}
+
+.empty{
+margin:auto;
+text-align:center;
+padding:30px;
+opacity:.7;
+}
+
+.empty h2{
+font-family:'DM Serif Display',serif;
+color:var(--green-dark);
+margin-bottom:10px;
+}
+
+.empty p{
+font-size:14px;
+color:var(--muted);
+line-height:1.6;
 }
 </style>
 </head>
+
 <body>
 
 <div id="app">
 
-  <div class="header">
-    AgroAssistente 🌱
-  </div>
+<div class="header">
+<div class="logo">
+<svg viewBox="0 0 24 24">
+<path d="M12 2C9 2 6 4.5 6 8c0 2.5 1.5 4.5 3.5 5.5V20h5v-6.5C16.5 12.5 18 10.5 18 8c0-3.5-3-6-6-6z"/>
+</svg>
+</div>
 
-  <div class="setup">
-    <input type="password" id="apiKey" placeholder="Cole sua API Key Gemini" />
-    <button onclick="saveKey()">Salvar chave</button>
-  </div>
+<div class="header-text">
+<div class="title">AgroAssistente</div>
+<div class="subtitle">Especialista em pecuária de corte</div>
+</div>
+</div>
 
-  <div id="chat"></div>
+<div class="setup">
+<input type="password" id="apiKey" placeholder="Cole sua API Key Gemini">
+<button onclick="saveKey()">Salvar</button>
+</div>
 
-  <div class="input-area">
-    <textarea id="messageInput" placeholder="Digite sua pergunta..."></textarea>
-    <button onclick="sendMessage()">Enviar</button>
-  </div>
+<div class="chat" id="chat">
+
+<div class="empty" id="empty">
+<h2>Olá, produtor!</h2>
+<p>Pergunte sobre manejo, nutrição, vacinação, custos ou mercado agro.</p>
+</div>
+
+</div>
+
+<div class="suggestions">
+<div class="chip" onclick="quickQuestion(this)">Vacinação bovina</div>
+<div class="chip" onclick="quickQuestion(this)">IATF</div>
+<div class="chip" onclick="quickQuestion(this)">Custo por arroba</div>
+<div class="chip" onclick="quickQuestion(this)">Confinamento</div>
+<div class="chip" onclick="quickQuestion(this)">Pastagem</div>
+</div>
+
+<div class="input-area">
+
+<div class="input-wrap">
+<textarea id="input" placeholder="Digite sua pergunta..." rows="1"></textarea>
+</div>
+
+<button class="send" onclick="sendMessage()">➜</button>
+
+</div>
 
 </div>
 
 <script>
 let API_KEY = localStorage.getItem('gemini_key') || '';
 
-if (API_KEY) {
-  document.getElementById('apiKey').value = API_KEY;
-}
-
-function saveKey() {
-  const key = document.getElementById('apiKey').value.trim();
-
-  if (!key.startsWith('AIza')) {
-    alert('API Key inválida');
-    return;
-  }
-
-  API_KEY = key;
-  localStorage.setItem('gemini_key', key);
-
-  alert('Chave salva com sucesso!');
+if(API_KEY){
+document.getElementById('apiKey').value = API_KEY;
 }
 
 const SYSTEM_PROMPT = `
 Você é o AgroAssistente.
 
-Você é especialista em:
+Especialista em:
 - Pecuária de corte
 - Pastagem
+- Reprodução bovina
 - Nutrição animal
-- Manejo bovino
+- Manejo
 - Mercado agro
 - Confinamento
-- Reprodução bovina
-- Custos por arroba
 
 Sempre responda em português do Brasil.
 
-Use linguagem prática e direta.
+Use linguagem prática, direta e simples.
 `;
 
-function addMessage(text, type) {
-  const chat = document.getElementById('chat');
+function saveKey(){
+const key = document.getElementById('apiKey').value.trim();
 
-  const div = document.createElement('div');
-  div.className = `message ${type}`;
-  div.textContent = text;
-
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+if(!key.startsWith('AIza')){
+alert('API Key inválida');
+return;
 }
 
-async function sendMessage() {
-  const input = document.getElementById('messageInput');
-  const text = input.value.trim();
+API_KEY = key;
+localStorage.setItem('gemini_key', key);
 
-  if (!text) return;
-
-  if (!API_KEY) {
-    alert('Salve sua API Key primeiro');
-    return;
-  }
-
-  addMessage(text, 'user');
-
-  input.value = '';
-
-  try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: `${SYSTEM_PROMPT}\n\nUsuário: ${text}`
-                }
-              ]
-            }
-          ]
-        })
-      }
-    );
-
-    const data = await response.json();
-
-    console.log(data);
-
-    if (data.candidates && data.candidates[0]) {
-      const reply = data.candidates[0].content.parts[0].text;
-      addMessage(reply, 'ai');
-    } else if (data.error) {
-      addMessage('Erro: ' + data.error.message, 'ai');
-    } else {
-      addMessage('Não foi possível obter resposta.', 'ai');
-    }
-
-  } catch (error) {
-    console.error(error);
-    addMessage('Erro de conexão.', 'ai');
-  }
+alert('API salva com sucesso');
 }
+
+function quickQuestion(el){
+document.getElementById('input').value = el.innerText;
+sendMessage();
+}
+
+function addMessage(text,type){
+
+const empty = document.getElementById('empty');
+if(empty){
+empty.remove();
+}
+
+const chat = document.getElementById('chat');
+
+const message = document.createElement('div');
+message.className = 'message ' + type;
+
+const avatar = document.createElement('div');
+avatar.className = 'avatar ' + (type === 'user' ? 'user-avatar' : 'ai-avatar');
+avatar.innerText = type === 'user' ? 'VC' : 'IA';
+
+const bubble = document.createElement('div');
+bubble.className = 'bubble ' + (type === 'user' ? 'user-bubble' : 'ai-bubble');
+bubble.innerText = text;
+
+message.appendChild(avatar);
+message.appendChild(bubble);
+
+chat.appendChild(message);
+
+chat.scrollTop = chat.scrollHeight;
+}
+
+async function sendMessage(){
+
+const input = document.getElementById('input');
+
+const text = input.value.trim();
+
+if(!text){
+return;
+}
+
+if(!API_KEY){
+alert('Salve sua API Key primeiro');
+return;
+}
+
+addMessage(text,'user');
+
+input.value = '';
+
+try{
+
+const response = await fetch(
+`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+contents:[
+{
+parts:[
+{
+text: SYSTEM_PROMPT + "\\n\\nUsuário: " + text
+}
+]
+}
+]
+})
+}
+);
+
+const data = await response.json();
+
+console.log(data);
+
+if(data.candidates && data.candidates[0]){
+
+const reply = data.candidates[0].content.parts[0].text;
+
+addMessage(reply,'ai');
+
+}else if(data.error){
+
+addMessage('Erro: ' + data.error.message,'ai');
+
+}else{
+
+addMessage('Não foi possível obter resposta.','ai');
+
+}
+
+}catch(error){
+
+console.error(error);
+
+addMessage('Erro de conexão.','ai');
+
+}
+
+}
+
+document.getElementById('input').addEventListener('keydown',function(e){
+
+if(e.key === 'Enter' && !e.shiftKey){
+
+e.preventDefault();
+
+sendMessage();
+
+}
+
+});
 </script>
 
 </body>
 </html>
-```
-
-Mudanças principais que corrigi:
-
-* Removi o `system_instruction` incompatível
-* Corrigi o endpoint da API
-* Corrigi o modelo Gemini
-* Simplifiquei o JSON enviado
-* Mantive salvamento da API key
-* Mantive chat funcional
-* Adicionei logs para debug
-* Mantive compatibilidade com GitHub Pages
-* Evitei problemas do v1beta
-
-Agora deve funcionar normalmente no GitHub Pages.
