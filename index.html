@@ -1,4 +1,193 @@
+# AgroAssistente — Versão Funcional (Gemini API)
+
+Substitua TODO o conteúdo do seu arquivo HTML por este.
+
+```html
 <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgroAssistente</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#app {
+  width: 100%;
+  max-width: 500px;
+  height: 100vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: #1d4d2b;
+  color: white;
+  padding: 16px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  padding: 12px;
+  border-radius: 12px;
+  line-height: 1.5;
+  max-width: 85%;
+  white-space: pre-wrap;
+}
+
+.user {
+  background: #1d4d2b;
+  color: white;
+  align-self: flex-end;
+}
+
+.ai {
+  background: #ececec;
+  color: black;
+  align-self: flex-start;
+}
+
+.input-area {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #ddd;
+}
+
+textarea {
+  flex: 1;
+  resize: none;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  height: 50px;
+}
+
+button {
+  background: #1d4d2b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+.setup {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.setup input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <div class="header">
+    AgroAssistente 🌱
+  </div>
+
+  <div class="setup">
+    <input type="password" id="apiKey" placeholder="Cole sua API Key Gemini" />
+    <button onclick="saveKey()">Salvar chave</button>
+  </div>
+
+  <div id="chat"></div>
+
+  <div class="input-area">
+    <textarea id="messageInput" placeholder="Digite sua pergunta..."></textarea>
+    <button onclick="sendMessage()">Enviar</button>
+  </div>
+
+</div>
+
+<script>
+let API_KEY = localStorage.getItem('gemini_key') || '';
+
+if (API_KEY) {
+  document.getElementById('apiKey').value = API_KEY;
+}
+
+function saveKey() {
+  const key = document.getElementById('apiKey').value.trim();
+
+  if (!key.startsWith('AIza')) {
+    alert('API Key inválida');
+    return;
+  }
+
+  API_KEY = key;
+  localStorage.setItem('gemini_key', key);
+
+  alert('Chave salva com sucesso!');
+}
+
+const SYSTEM_PROMPT = `
+Você é o AgroAssistente.
+
+Você é especialista em:
+- Pecuária de corte
+- Pastagem
+- Nutrição animal
+- Manejo bovino
+- Mercado agro
+- Confinamento
+- Reprodução bovina
+- Custos por arroba
+
+Sempre responda em português do Brasil.
+
+Use linguagem prática e direta.
+`;
+
+function addMessage(text, type) {
+  const chat = document.getElementById('chat');
+
+  const div = document.createElement('div');
+  div.className = `message ${type}`;
+  div.textContent = text;
+
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('messageInput');
+  const text = input.value.trim();
 
   if (!text) return;
 
@@ -55,3 +244,18 @@
 
 </body>
 </html>
+```
+
+Mudanças principais que corrigi:
+
+* Removi o `system_instruction` incompatível
+* Corrigi o endpoint da API
+* Corrigi o modelo Gemini
+* Simplifiquei o JSON enviado
+* Mantive salvamento da API key
+* Mantive chat funcional
+* Adicionei logs para debug
+* Mantive compatibilidade com GitHub Pages
+* Evitei problemas do v1beta
+
+Agora deve funcionar normalmente no GitHub Pages.
